@@ -35,7 +35,7 @@ class CheckStatusCode:
 def check_run():
 
     url_list = ['https://integra-auto.ru', 'https://integra-gk.ru',
-                'http://integraaa-development.ru', 'http://integra-investment.ru',
+                'http://integra-development.ru', 'http://integra-investment.ru',
                 'http://integra-offers.ru', 'http://integra-arenda.ru',
                 'http://how-to-invest.ru']
     result_list = list()
