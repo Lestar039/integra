@@ -1,4 +1,5 @@
 import requests
+from mainpage.models import WebsiteData
 from loguru import logger
 
 
@@ -34,23 +35,18 @@ class CheckStatusCode:
 
 def check_run():
 
-    url_list = ['https://integra-auto.ru', 'https://integra-gk.ru',
-                'http://integra-development.ru', 'http://integra-investment.ru',
-                'http://integra-offers.ru', 'http://integra-arenda.ru',
-                'http://how-to-invest.ru']
-    result_list = list()
+    url_list = WebsiteData.objects.only('url')
 
     for _ in url_list:
-        one = CheckStatusCode(_)
+        one = CheckStatusCode('http://' + str(_))
         try:
             text = one.get_page()
             status = one.check_code_status(text)
             if status:
-                result_list.append([_, 'Success!'])
+                WebsiteData.objects.update_or_create(url=_, defaults={'status': 'Success'})
         except Exception as msg:
-            result_list.append([_, 'Error'])
+            WebsiteData.objects.update_or_create(url=_, defaults={'status': 'Failed'})
             logger.error(msg)
-    return result_list
 
 
 if __name__ == "__main__":

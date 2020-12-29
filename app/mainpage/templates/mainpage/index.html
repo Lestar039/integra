@@ -5,30 +5,52 @@ Main Page
 {% endblock %}
 
 {% block content %}
-<div class="container">
-    <h4>Status code</h4>
+<section>
+    <div class="container">
+        <h4>Status code</h4>
         <table class="table table-striped table-sm status-code">
             <thead>
             <tr>
                 <th>#</th>
                 <th>Website</th>
                 <th>Status</th>
+                <th>Delete</th>
             </tr>
             </thead>
             <tbody>
             {% for i in sites %}
             <tr>
                 <th scope="row">{{ forloop.counter }}</th>
-                <td>{{ i.0 }}</td>
-                {% if i.1 == "Success!" %}
-                    <td class="text-success">{{ i.1 }}</td>
+                <td>http://{{ i.url }}</td>
+                {% if i.status == "Success" %}
+                <td class="text-success">{{ i.status }}</td>
                 {% else %}
-                    <td class="text-danger">{{ i.1 }}</td>
+                <td class="text-danger">{{ i.status }}</td>
                 {% endif %}
+                <td>
+                    <a class="text-danger" href="{% url 'delete_urls' url_del=i.url %}">X</a>
+                </td>
             </tr>
             {% endfor %}
             </tbody>
         </table>
-
-</div>
+        <div class="text-right">
+            <a href="{% url 'check_sites_url' %}">
+                <button class="btn btn-outline-success">
+                    Check now
+                </button>
+            </a>
+        </div>
+    </div>
+</section>
+<section>
+    <div class="container">
+        <h5>Add new url</h5>
+        <form action="" method="post">
+            {% csrf_token %}
+            {{ form }}
+            <button type="submit" class="btn btn-outline-primary">Save</button>
+        </form>
+    </div>
+</section>
 {% endblock %}
