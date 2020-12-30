@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from .forms import WebsiteForm
 from .models import WebsiteData
 from django.views.generic import TemplateView
+from django.contrib import messages
 
 from .services.service_check_status_code import check_run
 
@@ -17,6 +18,7 @@ def save_url(request):
         if form.is_valid():
             form.save()
             form = WebsiteForm()
+            messages.success(request, 'URL has been successfully added')
     else:
         form = WebsiteForm()
 
@@ -34,6 +36,7 @@ def delete_url(request, url_del):
     """
     url = WebsiteData.objects.get(url=url_del)
     url.delete()
+    messages.success(request, 'URL has been deleted')
     return redirect('save_urls')
 
 
@@ -42,7 +45,7 @@ def start_check(request):
     Start parsing status code
     """
     check_run()
-    # return render(request, 'mainpage/check_done.html')
+    messages.success(request, 'Scan websites successfully done')
     return redirect('save_urls')
 
 

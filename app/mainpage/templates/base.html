@@ -41,19 +41,6 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'calendar_urls' %}">Calendar</a>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                       data-toggle="dropdown"
-                       aria-haspopup="true" aria-expanded="false">
-                        Our Sites
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="#">Integra auto</a>
-                        <a class="dropdown-item" href="#">Integra estate</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Integra #</a>
-                    </div>
-                </li>
             </ul>
 
 <!--            <form class="form-inline my-2 my-lg-0">-->
@@ -77,8 +64,26 @@
         </div>
     </div>
 </nav>
+
+<div class="container"><br>
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <div class="row">
+            <div class="alert alert-{{ message.tags }} col-6" role="alert">
+                <li {% if message.tags %}
+                    class="{{ message.tags }}"
+                    {% endif %}>{{ message }}
+                </li>
+            </div>
+        </div>
+        {% endfor %}
+    </ul>
+    {% endif %}
+</div>
+
 {% block content %}
-Some one here
+    Some one here
 {% endblock %}
 </body>
 </html>
