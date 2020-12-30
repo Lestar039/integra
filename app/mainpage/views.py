@@ -5,6 +5,7 @@ from django.views.generic import TemplateView
 from django.contrib import messages
 
 from .services.service_check_status_code import check_run
+from .services.service_time_comparison import time_comparison
 
 
 def save_url(request):
@@ -22,9 +23,12 @@ def save_url(request):
     else:
         form = WebsiteForm()
 
+    time_ex = time_comparison()
+
     context = {
         'form': form,
-        'sites': site_list
+        'sites': site_list,
+        'time': time_ex
     }
 
     return render(request, 'mainpage/index.html', context=context)
