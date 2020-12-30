@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load crispy_forms_tags %}
+
 {% block title %}
 Main Page
 {% endblock %}
@@ -13,6 +15,7 @@ Main Page
             <tr>
                 <th>#</th>
                 <th>Website</th>
+                <th>Ya Counter</th>
                 <th>Status</th>
                 <th>Delete</th>
             </tr>
@@ -22,6 +25,7 @@ Main Page
             <tr>
                 <th scope="row">{{ forloop.counter }}</th>
                 <td>http://{{ i.url }}</td>
+                <th>{{ i.ya_counter_number }}</th>
                 {% if i.status == "Success" %}
                 <td class="text-success">{{ i.status }}</td>
                 {% else %}
@@ -43,14 +47,24 @@ Main Page
         </div>
     </div>
 </section>
+
 <section>
     <div class="container">
-        <h5>Add new url</h5>
-        <form action="" method="post">
+        <hr>
+        <h4>Add new url</h4>
+        <form action="" method="POST">
             {% csrf_token %}
-            {{ form }}
-            <button type="submit" class="btn btn-outline-primary">Save</button>
+            <div class="row">
+                <div class="col-4">{{ form.url|as_crispy_field }}</div>
+                <div class="col-4">{{ form.ya_counter_number|as_crispy_field }}</div>
+                <div class="col-4">{{ form.expiration_date|as_crispy_field }}</div>
+                <div class="col-4">
+                    <button class="btn btn-outline-primary" type="submit">Save</button>
+                </div>
+
+            </div>
         </form>
     </div>
 </section>
+
 {% endblock %}
