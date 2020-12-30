@@ -1,5 +1,5 @@
 import requests
-from mainpage.models import WebsiteData
+from ..models import WebsiteData
 from loguru import logger
 
 
