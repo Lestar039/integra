@@ -53,11 +53,6 @@ def start_check(request):
     return redirect('save_urls')
 
 
-def time(request):
-    time_comparison()
-    return redirect('save_urls')
-
-
 class AnalyticsView(TemplateView):
     template_name = 'mainpage/analytics.html'
 
