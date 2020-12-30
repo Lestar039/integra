@@ -4,6 +4,8 @@ from .models import WebsiteData
 from django.views.generic import TemplateView
 from django.contrib import messages
 
+from loguru import logger
+
 from .services.service_check_status_code import check_run
 from .services.service_time_comparison import time_comparison
 
@@ -32,6 +34,30 @@ def save_url(request):
     }
 
     return render(request, 'mainpage/index.html', context=context)
+
+
+def edit_url(request, url_ed):
+    """
+    Edit ticker form user account
+    """
+    edit_form = WebsiteData.objects.filter(
+        url=url_ed,
+    ).first()
+
+    if request.method == 'POST':
+        form = WebsiteForm(request.POST, instance=edit_form)
+        if form.is_valid():
+            form.save()
+            messages.success(request, f'{url_ed} has been updated')
+            logger.debug(f'{url_ed} has been updated')
+            return redirect('save_urls')
+    else:
+        form = WebsiteForm(instance=edit_form)
+    context = {
+        'form': form,
+        'url': url_ed
+    }
+    return render(request, 'mainpage/edit_url.html', context=context)
 
 
 def delete_url(request, url_del):

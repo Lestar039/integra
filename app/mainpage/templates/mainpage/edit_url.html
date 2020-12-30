@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}
+Main Page
+{% endblock %}
+
+{% block content %}
+
+<section>
+    <div class="container">
+        <h3>{{ url }}</h3>
+        <form action="" method="POST">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-4 d-none">{{ form.url|as_crispy_field }}</div>
+                <div class="col-4">{{ form.ya_counter_number|as_crispy_field }}</div>
+                <div class="col-4">{{ form.expiration_date|as_crispy_field }}</div>
+                <div class="col-8">
+                    <button class="mr-3 btn btn-outline-primary" type="submit">Save</button>
+                    <a href="{% url 'save_urls' %}" id="cancel" name="cancel"
+                       class="btn btn-outline-danger">Cancel</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+
+{% endblock %}

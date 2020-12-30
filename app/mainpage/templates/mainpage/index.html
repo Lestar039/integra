@@ -28,6 +28,7 @@ Main Page
                 <th>Website</th>
                 <th>Ya Counter</th>
                 <th>Status</th>
+                <th>Edit</th>
                 <th>Delete</th>
             </tr>
             </thead>
@@ -36,12 +37,15 @@ Main Page
             <tr>
                 <th scope="row">{{ forloop.counter }}</th>
                 <td>http://{{ i.url }}</td>
-                <th>{{ i.ya_counter_number }}</th>
+                <td>{{ i.ya_counter_number }}</td>
                 {% if i.status == "Success" %}
                 <td class="text-success">{{ i.status }}</td>
                 {% else %}
                 <td class="text-danger">{{ i.status }}</td>
                 {% endif %}
+                <td>
+                    <a class="text-danger" href="{% url 'edit_urls' url_ed=i.url %}">Edit</a>
+                </td>
                 <td>
                     <a class="text-danger" href="{% url 'delete_urls' url_del=i.url %}">X</a>
                 </td>

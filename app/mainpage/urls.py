@@ -6,6 +6,7 @@ from .views import *
 urlpatterns = [
     path('', views.save_url, name='save_urls'),
     path('delete-url/<str:url_del>/', views.delete_url, name='delete_urls'),
+    path('edit-url/<str:url_ed>/', views.edit_url, name='edit_urls'),
 
     # services paths
     path('check/', views.start_check, name='check_sites_url'),

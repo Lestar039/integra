@@ -6,3 +6,4 @@ docker-compose.yml
 #**/init.sql/**
 .DS_Store
 **/__pycache__/**
+.venv.dev
