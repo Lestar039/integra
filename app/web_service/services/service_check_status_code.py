@@ -1,5 +1,5 @@
 import requests
-from ..models import WebsiteData
+from ..models import DomainData
 from loguru import logger
 
 
@@ -35,7 +35,7 @@ class CheckStatusCode:
 
 def check_run():
 
-    url_list = WebsiteData.objects.only('url')
+    url_list = DomainData.objects.only('url')
 
     for _ in url_list:
         one = CheckStatusCode('http://' + str(_))
@@ -43,9 +43,9 @@ def check_run():
             text = one.get_page()
             status = one.check_code_status(text)
             if status:
-                WebsiteData.objects.update_or_create(url=_, defaults={'status': 'Success'})
+                DomainData.objects.update_or_create(url=_, defaults={'status': 'Success'})
         except Exception as msg:
-            WebsiteData.objects.update_or_create(url=_, defaults={'status': 'Failed'})
+            DomainData.objects.update_or_create(url=_, defaults={'status': 'Failed'})
             logger.error(msg)
 
 

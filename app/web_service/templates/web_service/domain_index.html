@@ -3,7 +3,7 @@
 {% load crispy_forms_tags %}
 
 {% block title %}
-    Main Page
+    Domains
 {% endblock %}
 
 {% block content %}
@@ -12,7 +12,7 @@
         <div class="text-right">
             {% for i in time %}
                 <h5 class="text-danger">Attention!</h5>
-                <div>http://{{ i.0 }} left in <b class="text-danger">{{ i.1 }}</b> days</div>
+                <div>*Domain <b>http://{{ i.0 }}</b> left in <b class="text-danger">{{ i.1 }}</b> days</div>
             {% endfor %}
         </div>
     </div>
@@ -20,12 +20,12 @@
 
 <section>
     <div class="container">
-        <h4>Status code</h4>
+        <h4>Domains status</h4>
         <table class="table table-striped table-sm status-code">
             <thead>
             <tr>
                 <th>#</th>
-                <th>Website</th>
+                <th>Domain</th>
                 <th>Ya Counter</th>
                 <th>Status</th>
                 <th>Edit</th>
@@ -44,10 +44,10 @@
                 <td class="text-danger">{{ i.status }}</td>
                 {% endif %}
                 <td>
-                    <a class="text-danger" href="{% url 'edit_urls' url_ed=i.url %}">Edit</a>
+                    <a class="text-primary" href="{% url 'domain_edit_urls' url_ed=i.url %}">Edit</a>
                 </td>
                 <td>
-                    <a class="text-danger" href="{% url 'delete_urls' url_del=i.url %}">X</a>
+                    <a class="text-danger" href="{% url 'domain_delete_urls' url_del=i.url %}">X</a>
                 </td>
             </tr>
             {% endfor %}
@@ -70,11 +70,12 @@
         <form action="" method="POST">
             {% csrf_token %}
             <div class="row">
-                <div class="col-4">{{ form.url|as_crispy_field }}</div>
-                <div class="col-4">{{ form.ya_counter_number|as_crispy_field }}</div>
-                <div class="col-4">{{ form.expiration_date|as_crispy_field }}</div>
-                <div class="col-4">
-                    <button class="btn btn-outline-primary" type="submit">Save</button>
+                <div class="col-3">{{ form.url|as_crispy_field }}</div>
+                <div class="col-3">{{ form.ya_counter_number|as_crispy_field }}</div>
+                <div class="col-3">{{ form.expiration_date|as_crispy_field }}</div>
+                <div class="col-3">{{ form.hosting|as_crispy_field }}</div>
+                <div class="col-12 text-right">
+                    <button class="btn btn-outline-success" type="submit">Save</button>
                 </div>
 
             </div>
