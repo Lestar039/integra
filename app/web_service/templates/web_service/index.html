@@ -11,12 +11,18 @@ Main Page
 <section>
     <div class="container">
         <div class="jumbotron">
-            <h1 class="display-4">Hello, world!</h1>
-            <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention
-                to featured content or information.</p>
+            <h1 class="display-4">Welcome!</h1>
+            <p class="lead">This application for checking webmaster's services:</p>
+            <ul>
+                <li><a class="btn-outline-success" href="{% url 'hosting_urls' %}">Hosting</a></li>
+                <li><a class="btn-outline-success" href="{% url 'domains_urls' %}">Domains</a></li>
+                <li>SOON! Analytics</li>
+            </ul>
             <hr class="my-4">
-            <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
-            <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
+            <p>
+                <a class="btn-outline-success" href="#" role="button">Register</a> here and LET'S ROCK!
+            </p>
+
         </div>
     </div>
 </section>
