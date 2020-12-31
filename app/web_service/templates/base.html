@@ -23,50 +23,51 @@
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #00A779;">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="/">
-            <!--        <img src="/docs/5.0/assets/brand/bootstrap-logo.svg" alt="" width="30" height="24" class="d-inline-block align-top">-->
-            INTEGRA panel
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item dropdown active">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Web Services
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="{% url 'domains_urls' %}">Domains</a>
-                        <a class="dropdown-item" href="{% url 'hosting_urls' %}">Hosting</a>
-                    </div>
-                </li>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="/">INTAGRA</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            {% if request.user.is_authenticated %}
+            <li class="nav-item dropdown active">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">Web Service
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="{% url 'domains_urls' %}">Domains</a>
+                    <a class="dropdown-item" href="{% url 'hosting_urls' %}">Hosting</a>
+                </div>
+            </li>
+
+            {% endif %}
             </ul>
 
-            <!--            <form class="form-inline my-2 my-lg-0">-->
-            <!--                <div class="nav-item">-->
-            <!--                    <a class="text-light nav-link" href="" tabindex="-1" aria-disabled="true">-->
-            <!--                        user.first_name-->
-            <!--                    </a>-->
-            <!--                </div>-->
-            <!--                <div class="nav-item">-->
-            <!--                    <a class="form-inline text-danger" href="#" tabindex="-1" aria-disabled="true">-->
-            <!--                        Logout-->
-            <!--                    </a>-->
-            <!--                </div>-->
-            <!--                <div class="nav-item">-->
-            <!--                    <a class="form-inline text-primary" href="#" tabindex="-1" aria-disabled="true">-->
-            <!--                        Login-->
-            <!--                    </a>-->
-            <!--                </div>-->
-            <!--            </form>-->
+            <form class="form-inline my-2 my-lg-0 left">
+                {% if request.user.is_authenticated %}
+                <div class="nav-item">
+                    <a class="text-light nav-link" href="{% url 'edit' %}" tabindex="-1" aria-disabled="true">
+                        {{ user.username }}
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a class="form-inline text-danger" href="{% url 'logout' %}" tabindex="-1" aria-disabled="true">
+                        Logout
+                    </a>
+                </div>
+                {% else %}
+                <div class="nav-item">
+                    <a class="form-inline text-success" href="{% url 'login' %}" tabindex="-1" aria-disabled="true">
+                        Login
+                    </a>
+                </div>
+                {% endif %}
+            </form>
 
         </div>
-    </div>
 </nav>
 
 <div class="container"><br>
@@ -87,7 +88,7 @@
 </div>
 
 {% block content %}
-Some one here
+    Some one here
 {% endblock %}
 </body>
 </html>

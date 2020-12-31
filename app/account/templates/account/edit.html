@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}Edit{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="ml-3">Edit your account</h1>
+
+    <form action="." method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row-8">
+            <div class="col-4">{{ user_form.first_name|as_crispy_field }}</div>
+            <div class="col-4">{{ user_form.email|as_crispy_field }}</div>
+            <div class="col-4">{{ profile_form.telechat_id|as_crispy_field }}</div>
+            <div class="col-4">
+                <button class="mr-3 btn btn-outline-primary">Save changes</button>
+                <a href="/" id="cancel" name="cancel"
+                   class="btn btn-outline-danger">Cancel</a>
+                <hr>
+                <a href="{% url 'password_change' %}" id="" name=""
+                   class="btn btn-outline-primary">Change password</a><br><br>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

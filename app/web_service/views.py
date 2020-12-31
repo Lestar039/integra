@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from .forms import DomainForm, HostingForm
 from .models import DomainData, HostingData
@@ -17,6 +18,7 @@ def index(request):
     return render(request, 'web_service/index.html')
 
 
+@login_required
 def save_domain(request):
     """
     Save url to DB
@@ -43,6 +45,7 @@ def save_domain(request):
     return render(request, 'web_service/domain_index.html', context=context)
 
 
+@login_required
 def edit_domain(request, url_ed):
     """
     Edit domain form
@@ -67,6 +70,7 @@ def edit_domain(request, url_ed):
     return render(request, 'web_service/domain_edit_url.html', context=context)
 
 
+@login_required
 def delete_domain(request, url_del):
     """
     Delete url from DB
@@ -77,6 +81,7 @@ def delete_domain(request, url_del):
     return redirect('domains_urls')
 
 
+@login_required
 def start_check(request):
     """
     Start parsing status code
@@ -86,6 +91,7 @@ def start_check(request):
     return redirect('domains_urls')
 
 
+@login_required
 def save_hosting(request):
     """
     Save hosting to DB
@@ -112,6 +118,7 @@ def save_hosting(request):
     return render(request, 'web_service/hosting_index.html', context=context)
 
 
+@login_required
 def edit_hosting(request, name_ed):
     """
     Edit hosting form
@@ -136,6 +143,7 @@ def edit_hosting(request, name_ed):
     return render(request, 'web_service/hosting_edit_url.html', context=context)
 
 
+@login_required
 def delete_hosting(request, name_del):
     """
     Delete hosting from DB
@@ -144,3 +152,11 @@ def delete_hosting(request, name_del):
     name.delete()
     messages.success(request, f'Hosting {name_del} has been deleted')
     return redirect('hosting_urls')
+
+
+def redirect_to_user_page(request):
+    """
+    Redirect after Login to Dashboard Page
+    """
+    logger.debug(f"Redirect from login to {request.user.id} domain's page")
+    return redirect(f'/user/domain/{request.user.id}')
