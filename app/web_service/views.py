@@ -2,13 +2,13 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from .forms import DomainForm, HostingForm
 from .models import DomainData, HostingData
-from django.views.generic import TemplateView
 from django.contrib import messages
 
 from loguru import logger
 
 from .services.service_check_status_code import check_run
 from .services.service_time_comparison import domain_time_comparison, hosting_time_comparison
+from .services.servece_dashboard import hosting_db, domain_db
 
 
 def index(request):
@@ -23,14 +23,15 @@ def save_domain(request):
     """
     Save url to DB
     """
-    site_list = DomainData.objects.all()
+    domain_list = DomainData.objects.all()
 
     if request.method == 'POST':
         form = DomainForm(request.POST)
         if form.is_valid():
+            domain = form.cleaned_data.get('url')
             form.save()
             form = DomainForm()
-            messages.success(request, 'URL has been successfully added')
+            messages.success(request, f'{domain} has been successfully added')
     else:
         form = DomainForm()
 
@@ -38,7 +39,7 @@ def save_domain(request):
 
     context = {
         'form': form,
-        'sites': site_list,
+        'domains': domain_list,
         'time': time_ex
     }
 
@@ -77,7 +78,7 @@ def delete_domain(request, url_del):
     """
     url = DomainData.objects.get(url=url_del)
     url.delete()
-    messages.success(request, 'URL has been deleted')
+    messages.success(request, f'{url_del} has been deleted')
     return redirect('domains_urls')
 
 
@@ -101,9 +102,10 @@ def save_hosting(request):
     if request.method == 'POST':
         form = HostingForm(request.POST)
         if form.is_valid():
+            hosting = form.cleaned_data.get('name')
             form.save()
             form = HostingForm()
-            messages.success(request, 'Hosting has been successfully added')
+            messages.success(request, f'{hosting} has been successfully added')
     else:
         form = HostingForm()
 
@@ -150,7 +152,7 @@ def delete_hosting(request, name_del):
     """
     name = HostingData.objects.get(name=name_del)
     name.delete()
-    messages.success(request, f'Hosting {name_del} has been deleted')
+    messages.success(request, f'{name_del} has been deleted')
     return redirect('hosting_urls')
 
 
@@ -160,3 +162,17 @@ def redirect_to_user_page(request):
     """
     logger.debug(f"Redirect from login to {request.user.id} domain's page")
     return redirect(f'/user/domain/{request.user.id}')
+
+
+@login_required
+def dashboard(request):
+    domains = domain_db()
+    hosting = hosting_db()
+
+    context = {
+        'domains': domains,
+        'hosting': hosting
+    }
+
+    return render(request, 'web_service/dashboard.html', context=context)
+

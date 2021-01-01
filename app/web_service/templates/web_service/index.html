@@ -3,7 +3,7 @@
 {% load crispy_forms_tags %}
 
 {% block title %}
-Main Page
+    Main Page
 {% endblock %}
 
 {% block content %}
@@ -11,7 +11,18 @@ Main Page
 <section>
     <div class="container">
         <div class="jumbotron">
-            <h1 class="display-4">Welcome!</h1>
+            {% if request.user.is_authenticated %}
+            <h3 class="display-4">Hello, {{ user.username }}!</h3>
+            <p class="lead">Let's start here:</p>
+            <ul>
+                <li><a class="btn-outline-success" href="{% url 'hosting_urls' %}">Hosting</a></li>
+                <li><a class="btn-outline-success" href="{% url 'domains_urls' %}">Domains</a></li>
+                <li>SOON! Analytics</li>
+            </ul>
+            <hr class="my-4">
+
+            {% else %}
+                        <h1 class="display-4">Welcome!</h1>
             <p class="lead">This application for checking webmaster's services:</p>
             <ul>
                 <li><a class="btn-outline-success" href="{% url 'hosting_urls' %}">Hosting</a></li>
@@ -22,6 +33,7 @@ Main Page
             <p>
                 <a class="btn-outline-success" href="{% url 'register' %}" role="button">Register</a> here and LET'S ROCK!
             </p>
+            {% endif %}
 
         </div>
     </div>

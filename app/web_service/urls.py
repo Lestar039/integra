@@ -15,4 +15,5 @@ urlpatterns = [
 
     # services paths
     path('check/', views.start_check, name='check_sites_url'),
+    path('domain/', views.dashboard, name='dashboard_url'),
 ]

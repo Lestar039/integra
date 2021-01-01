@@ -25,7 +25,7 @@
             <thead>
             <tr>
                 <th>#</th>
-                <th>Domain</th>
+                <th>Name</th>
                 <th>Ya Counter</th>
                 <th>Status</th>
                 <th>Edit</th>
@@ -33,7 +33,7 @@
             </tr>
             </thead>
             <tbody>
-            {% for i in sites %}
+            {% for i in domains %}
             <tr>
                 <th scope="row">{{ forloop.counter }}</th>
                 <td>http://{{ i.url }}</td>

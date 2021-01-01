@@ -7,7 +7,7 @@ def domain_time_comparison():
     """
     Create expiration time list domains
     """
-    all_urls = DomainData.objects.all()
+    all_urls = DomainData.objects.only('url', 'expiration_date')
     time_now = datetime.now(timezone.utc)
     expiration_list = list()
 
@@ -23,7 +23,7 @@ def hosting_time_comparison():
     """
     Create expiration time list hosting
     """
-    all_urls = HostingData.objects.all()
+    all_urls = HostingData.objects.only('name', 'expiration_date')
     time_now = datetime.now(timezone.utc)
     expiration_list = list()
 
