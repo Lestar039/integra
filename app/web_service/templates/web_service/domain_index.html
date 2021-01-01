@@ -26,7 +26,6 @@
             <tr>
                 <th>#</th>
                 <th>Name</th>
-                <th>Ya Counter</th>
                 <th>Status</th>
                 <th>Edit</th>
                 <th>Delete</th>
@@ -37,7 +36,6 @@
             <tr>
                 <th scope="row">{{ forloop.counter }}</th>
                 <td>http://{{ i.url }}</td>
-                <td>{{ i.ya_counter_number }}</td>
                 {% if i.status == "Success" %}
                 <td class="text-success">{{ i.status }}</td>
                 {% else %}

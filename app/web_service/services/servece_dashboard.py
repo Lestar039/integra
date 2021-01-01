@@ -5,9 +5,7 @@ def domain_db():
     """
     Query Set for domains
     """
-    result = DomainData.objects.only(
-        'url', 'ya_counter_number', 'expiration_date', 'status'
-    )
+    result = DomainData.objects.all()
     return result
 
 

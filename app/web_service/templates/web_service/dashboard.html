@@ -16,7 +16,7 @@
             <tr>
                 <th>#</th>
                 <th>Name</th>
-                <th>Yandex Counter</th>
+                <th>Hosting</th>
                 <th>Status</th>
                 <th>Expiration date</th>
             </tr>
@@ -26,7 +26,7 @@
             <tr>
                 <th scope="row">{{ forloop.counter }}</th>
                 <td>http://{{ i.url }}</td>
-                <td>{{ i.ya_counter_number }}</td>
+                <td>{{ i.hosting }}</td>
                 {% if i.status == "Success" %}
                 <td class="text-success">{{ i.status }}</td>
                 {% else %}
