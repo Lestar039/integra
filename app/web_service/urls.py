@@ -14,6 +14,6 @@ urlpatterns = [
     path('hosting-delete/<str:name_del>/', views.delete_hosting, name='hosting_delete_urls'),
 
     # services paths
-    path('check/', views.start_check, name='check_sites_url'),
-    path('domain/', views.dashboard, name='dashboard_url'),
+    path('check/', views.start_check, name='check_sites_urls'),
+    path('domain/', views.dashboard, name='dashboard_urls'),
 ]
