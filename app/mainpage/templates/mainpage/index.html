@@ -15,9 +15,9 @@
             <h3 class="display-4">Hello, {{ user.username }}!</h3>
             <p class="lead">Let's start here:</p>
             <ul>
-                <li><a class="btn-outline-success" href="{% url 'hosting_urls' %}">Hosting</a></li>
-                <li><a class="btn-outline-success" href="{% url 'domains_urls' %}">Domains</a></li>
-                <li><a class="btn-outline-success" href="{% url 'dashboard_urls' %}">Dashboard</a></li>
+                <li><a class="btn-outline-success" href="{% url 'dashboard_urls' pk=user.id %}">Dashboard</a></li>
+                <li><a class="btn-outline-success" href="{% url 'hosting_urls' pk=user.id %}">Hosting</a></li>
+                <li><a class="btn-outline-success" href="{% url 'domains_urls' pk=user.id %}">Domains</a></li>
                 <li>SOON! Analytics</li>
             </ul>
             <hr class="my-4">
