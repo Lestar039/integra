@@ -34,19 +34,27 @@ class CheckStatusCode:
 
 
 def check_run():
-
     url_list = DomainData.objects.only('url')
 
     for _ in url_list:
-        one = CheckStatusCode('http://' + str(_))
+        one = CheckStatusCode('https://' + str(_))
+        two = CheckStatusCode('http://' + str(_))
         try:
             text = one.get_page()
             status = one.check_code_status(text)
             if status:
-                DomainData.objects.update_or_create(url=_, defaults={'status': 'Success'})
+                DomainData.objects.update_or_create(url=_, defaults={'status': 'Success', 'ssh': True})
+                logger.debug(f'{_} SSH - True')
         except Exception as msg:
-            DomainData.objects.update_or_create(url=_, defaults={'status': 'Failed'})
             logger.error(msg)
+            text = two.get_page()
+            status = two.check_code_status(text)
+            if status:
+                DomainData.objects.update_or_create(url=_, defaults={'status': 'Success'})
+                logger.debug(f'{_} Not SSH')
+            else:
+                DomainData.objects.update_or_create(url=_, defaults={'status': 'Failed'})
+                logger.error(f'{_} Not found')
 
 
 if __name__ == "__main__":

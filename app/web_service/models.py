@@ -18,6 +18,7 @@ class DomainData(models.Model):
     ya_counter_number = models.CharField(max_length=20, blank=True)
     expiration_date = models.DateTimeField(auto_now=False, auto_now_add=False)
     status = models.CharField(max_length=20, blank=True)
+    ssh = models.BooleanField(default=False)
     hosting = models.ForeignKey(HostingData, on_delete=models.CASCADE)
     username = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 

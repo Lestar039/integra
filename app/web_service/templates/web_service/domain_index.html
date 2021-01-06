@@ -36,7 +36,11 @@
             {% for i in domains %}
             <tr>
                 <th scope="row">{{ forloop.counter }}</th>
+                {% if i.ssh %}
+                <td>https://{{ i.url }}</td>
+                {% else %}
                 <td>http://{{ i.url }}</td>
+                {% endif %}
                 <td>{{ i.ya_counter_number }}</td>
                 {% if i.status == "Success" %}
                 <td class="text-success">{{ i.status }}</td>
