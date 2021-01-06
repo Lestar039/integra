@@ -61,8 +61,6 @@ def edit_domain(request, pk, url_ed):
             messages.success(request, f'{url_ed} has been updated')
             logger.debug(f'{url_ed} has been updated')
             return redirect('domains_urls', pk=request.user.id)
-        else:
-            logger.error('AAAA')
     else:
         form = DomainForm(instance=edit_form)
     context = {
@@ -86,7 +84,7 @@ def delete_domain(request, pk, url_del):
 
 
 @login_required
-def start_check(request, pk):
+def start_check(request):
     """
     Start parsing status code
     """
