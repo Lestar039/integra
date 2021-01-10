@@ -3,8 +3,7 @@ app/venv/
 app/db.sqlite3
 **/local_settings.*
 docker-compose.yml
-#**/init.sql/**
 .DS_Store
 **/__pycache__/**
-.venv.dev
+.env.dev
 app/Documentation
