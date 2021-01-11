@@ -7,3 +7,4 @@ Web service for:
 - check expiration of the service payment
 - send alert about expiration to telegram (Soon)
 - yandex analytics (Soon)
+
