@@ -1,18 +1,12 @@
 from django.urls import reverse, resolve
 from django.test import SimpleTestCase
-from analytics.views import *
-from mainpage.views import *
 from web_service.views import *
 
 
 class TestGeneralUrls(SimpleTestCase):
     """
-    Test general urls: index, redirect after login, dashboard
+    Test general urls: redirect after login, dashboard
     """
-
-    def test_index_page_url(self):
-        url = reverse('index_url')
-        self.assertEqual(resolve(url).func, index)
 
     def test_user_page_url(self):
         url = reverse('redirect_to_user_page')
@@ -57,13 +51,3 @@ class TestDomainUrls(SimpleTestCase):
     def test_delete_domain_url(self):
         url = reverse('domain_delete_urls', kwargs={'pk': 1, 'url_del': 'some_name'})
         self.assertEqual(resolve(url).func, delete_domain)
-
-
-class TestAnalyticsUrls(SimpleTestCase):
-    """
-    Test analytics urls: analytics page
-    """
-
-    def test_analytics_page_url(self):
-        url = reverse('analytics_urls', kwargs={'pk': 1})
-        self.assertEqual(resolve(url).func, analytics)

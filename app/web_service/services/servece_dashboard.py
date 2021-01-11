@@ -6,7 +6,7 @@ def domain_db(pk):
     """
     Query Set for domains
     """
-    result = DomainData.objects.filter(username=pk)
+    result = DomainData.objects.filter(username=pk).order_by('expiration_date')
     return result
 
 

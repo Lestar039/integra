@@ -1,8 +1,9 @@
-# integra
-
-The service make your administrate websites life easy
+# web integra
 
 
-**Links:**
+Web service for:
 
-Work board https://dev.azure.com/IntegraProject/Integra%20Project/_boards/board/t/Integra%20Project%20Team/Issues
+- check status your websites
+- check expiration of the service payment
+- send alert about expiration to telegram (Soon)
+- yandex analytics (Soon)
