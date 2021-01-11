@@ -7,6 +7,20 @@
 {% endblock %}
 
 {% block content %}
+<section>
+    <div class="container">
+        <div class="text-right">
+            {% for i in host_ex_time %}
+                <h5 class="text-danger">Attention!</h5>
+                <div>Hosting <b>{{ i.0 }}</b> left in <b class="text-danger">{{ i.1 }}</b> days</div>
+            {% endfor %}
+            {% for i in dom_ex_time %}
+                <h5 class="text-danger">Attention!</h5>
+                <div>Domain <b>http://{{ i.0 }}</b> left in <b class="text-danger">{{ i.1 }}</b> days</div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
 
 <section>
     <div class="container">

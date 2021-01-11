@@ -33,12 +33,9 @@ def save_domain(request, pk):
     else:
         form = DomainForm()
 
-    time_ex = domain_time_comparison()
-
     context = {
         'form': form,
         'domains': domain_list,
-        'time': time_ex
     }
 
     return render(request, 'web_service/domain_index.html', context=context)
@@ -114,12 +111,9 @@ def save_hosting(request, pk):
     else:
         form = HostingForm()
 
-    time_ex = hosting_time_comparison()
-
     context = {
         'form': form,
-        'hosting': host_list,
-        'time': time_ex
+        'hosting': host_list
     }
 
     return render(request, 'web_service/hosting_index.html', context=context)
@@ -177,9 +171,14 @@ def dashboard(request, pk):
     domains = domain_db(pk)
     hosting = hosting_db(pk)
 
+    dom_ex_time = domain_time_comparison()
+    host_ex_time = hosting_time_comparison()
+
     context = {
         'domains': domains,
-        'hosting': hosting
+        'hosting': hosting,
+        'dom_ex_time': dom_ex_time,
+        'host_ex_time': host_ex_time
     }
 
     return render(request, 'web_service/dashboard.html', context=context)

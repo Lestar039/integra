@@ -40,21 +40,25 @@ def check_run():
         one = CheckStatusCode('https://' + str(_))
         two = CheckStatusCode('http://' + str(_))
         try:
-            text = one.get_page()
-            status = one.check_code_status(text)
-            if status:
-                DomainData.objects.update_or_create(url=_, defaults={'status': 'Success', 'ssh': True})
-                logger.debug(f'{_} SSH - True')
+            try:
+                text = one.get_page()
+                status = one.check_code_status(text)
+                if status:
+                    DomainData.objects.update_or_create(url=_, defaults={'status': 'Success', 'ssh': True})
+                    logger.debug(f'{_} SSH - True')
+            except Exception as msg:
+                logger.error(msg)
+                text = two.get_page()
+                status = two.check_code_status(text)
+                if status:
+                    DomainData.objects.update_or_create(url=_, defaults={'status': 'Success'})
+                    logger.debug(f'{_} Not SSH')
+                else:
+                    DomainData.objects.update_or_create(url=_, defaults={'status': 'Failed'})
+                    logger.error(f'{_} Not found')
         except Exception as msg:
             logger.error(msg)
-            text = two.get_page()
-            status = two.check_code_status(text)
-            if status:
-                DomainData.objects.update_or_create(url=_, defaults={'status': 'Success'})
-                logger.debug(f'{_} Not SSH')
-            else:
-                DomainData.objects.update_or_create(url=_, defaults={'status': 'Failed'})
-                logger.error(f'{_} Not found')
+            DomainData.objects.update_or_create(url=_, defaults={'status': 'Failed'})
 
 
 if __name__ == "__main__":

@@ -7,16 +7,6 @@
 {% endblock %}
 
 {% block content %}
-<section>
-    <div class="container">
-        <div class="text-right">
-            {% for i in time %}
-                <h5 class="text-danger">Attention!</h5>
-                <div>*Hosting <b>{{ i.0 }}</b> left in <b class="text-danger">{{ i.1 }}</b> days</div>
-            {% endfor %}
-        </div>
-    </div>
-</section>
 
 <section>
     <div class="container">
@@ -55,7 +45,7 @@
 <section>
     <div class="container">
         <hr>
-        <h4>Add new url</h4>
+        <h4>Add new hosting</h4>
         <form action="" method="POST">
             {% csrf_token %}
             <div class="row">
