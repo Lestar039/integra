@@ -12,29 +12,21 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 import os
 from os import environ
 from pathlib import Path
-# from .local_settings import *
+from .local_settings import *
 from django.contrib.messages import constants as messages
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = SECRET_KEY
-# docker <<<<<<<<<<<<<<<<<<
-SECRET_KEY = environ.get("SECRET_KEY")
-
-# SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = DEBUG
-# docker <<<<<<<<<<<<<<<<<<
-DEBUG = int(environ.get("DEBUG", default=0))
-
-# ALLOWED_HOSTS = ALLOWED_HOSTS
-# docker <<<<<<<<<<<<<<<<<
-ALLOWED_HOSTS = environ.get('ALLOWED_HOSTS').split(' ')
+try:
+    ALLOWED_HOSTS = environ.get('ALLOWED_HOSTS').split(' ')
+    DEBUG = int(environ.get("DEBUG", default=0))
+    SECRET_KEY = environ.get("SECRET_KEY")
+except AttributeError:
+    ALLOWED_HOSTS = LOCAL_ALLOWED_HOSTS
+    DEBUG = LOCAL_DEBUG
+    SECRET_KEY = LOCAL_SECRET_KEY
 
 
 # Application definition
