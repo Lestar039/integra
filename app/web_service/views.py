@@ -8,7 +8,7 @@ from django.contrib.auth.models import User
 from loguru import logger
 
 from .services.service_check_status_code import check_run
-from .services.service_time_comparison import domain_time_comparison, hosting_time_comparison
+from .services.service_time_comparison import domain_time_comparison, hosting_time_comparison, check_telegram_id
 from .services.servece_dashboard import hosting_db, domain_db
 
 
@@ -28,8 +28,10 @@ def save_domain(request, pk):
             a = form.save(commit=False)
             a.username = user
             a.save()
-            form = DomainForm()
+
+            check_telegram_id(request, pk)
             messages.success(request, f'{domain} has been successfully added')
+            form = DomainForm()
     else:
         form = DomainForm()
 
@@ -106,8 +108,10 @@ def save_hosting(request, pk):
             a = form.save(commit=False)
             a.username = user
             a.save()
-            form = HostingForm()
+
+            check_telegram_id(request, pk)
             messages.success(request, f'{hosting} has been successfully added')
+            form = HostingForm()
     else:
         form = HostingForm()
 
@@ -168,6 +172,9 @@ def redirect_to_user_page(request):
 
 @login_required
 def dashboard(request, pk):
+    """
+    All-in-one page information
+    """
     domains = domain_db(pk)
     hosting = hosting_db(pk)
 

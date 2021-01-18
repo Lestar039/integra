@@ -32,7 +32,7 @@ class UserEditForm(forms.ModelForm):
 
 
 class ProfileEditForm(forms.ModelForm):
-    telechat_id = forms.IntegerField(
+    telegram_id = forms.IntegerField(
         required=False,
         label='Telegram ID',
         widget=forms.TextInput(),
@@ -41,4 +41,4 @@ class ProfileEditForm(forms.ModelForm):
 
     class Meta:
         model = Profile
-        fields = ('telechat_id',)
+        fields = ('telegram_id',)
