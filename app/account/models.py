@@ -1,6 +1,5 @@
 from django.db import models
 from django.conf import settings
-from django.urls import reverse
 
 
 class Profile(models.Model):
@@ -9,6 +8,3 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.user.username
-
-    # def get_absolute_url(self):
-    #     return reverse('get_users_tickers', args=[str(self.user.id)])
