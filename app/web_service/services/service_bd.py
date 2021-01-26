@@ -31,7 +31,7 @@ def get_user(pk):
     return user
 
 
-def get_ya_counters(request):
+def get_ya_user_counters(request):
     """
     Get user's counters
     """
