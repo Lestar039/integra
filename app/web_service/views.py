@@ -3,13 +3,13 @@ from django.shortcuts import render, redirect
 from .forms import DomainForm, HostingForm
 from .models import DomainData, HostingData
 from django.contrib import messages
-from django.contrib.auth.models import User
 
 from loguru import logger
 
 from .services.service_check_status_code import check_run
 from .services.service_time_comparison import domain_time_comparison, hosting_time_comparison, check_telegram_id
 from .services.servece_dashboard import hosting_db, domain_db
+from .services.service_bd import get_user_hosting, get_user_domain, get_user
 
 
 @login_required
@@ -17,10 +17,9 @@ def save_domain(request, pk):
     """
     Save url to DB
     """
-    domain_list = DomainData.objects.filter(
-        username=request.user.id
-    )
-    user = User.objects.get(id=pk)
+    user = get_user(pk)
+    domain_list = get_user_domain(request)
+
     if request.method == 'POST':
         form = DomainForm(request.POST)
         if form.is_valid():
@@ -97,10 +96,9 @@ def save_hosting(request, pk):
     """
     Save hosting to DB
     """
-    host_list = HostingData.objects.filter(
-        username=request.user.id,
-    )
-    user = User.objects.get(id=pk)
+    host_list = get_user_hosting(request)
+    user = get_user(pk)
+
     if request.method == 'POST':
         form = HostingForm(request.POST)
         if form.is_valid():

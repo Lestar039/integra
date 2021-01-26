@@ -13,3 +13,4 @@ app/db.sqlite3
 
 app/Documentation
 /app/web_service/services/bot_config.py
+/app/analytics/services/yandex_config.py

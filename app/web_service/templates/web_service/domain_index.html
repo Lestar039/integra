@@ -16,7 +16,6 @@
             <tr>
                 <th>#</th>
                 <th>Name</th>
-                <th>Yandex Counter</th>
                 <th>Status</th>
                 <th>Edit</th>
                 <th>Delete</th>
@@ -31,7 +30,6 @@
                 {% else %}
                 <td>http://{{ i.url }}</td>
                 {% endif %}
-                <td>{{ i.ya_counter_number }}</td>
                 {% if i.status == "Success" %}
                 <td class="text-success">{{ i.status }}</td>
                 {% else %}
@@ -64,10 +62,9 @@
         <form action="" method="POST">
             {% csrf_token %}
             <div class="row">
-                <div class="col-3">{{ form.url|as_crispy_field }}</div>
-                <div class="col-3">{{ form.ya_counter_number|as_crispy_field }}</div>
-                <div class="col-3">{{ form.expiration_date|as_crispy_field }}</div>
-                <div class="col-3">{{ form.hosting|as_crispy_field }}</div>
+                <div class="col-4">{{ form.url|as_crispy_field }}</div>
+                <div class="col-4">{{ form.expiration_date|as_crispy_field }}</div>
+                <div class="col-4">{{ form.hosting|as_crispy_field }}</div>
                 <div class="col-12 text-right">
                     <button class="btn btn-outline-success" type="submit">Save</button>
                 </div>

@@ -15,7 +15,6 @@ Main Page
             {% csrf_token %}
             <div class="row">
                 <div class="col-4 d-none">{{ form.url|as_crispy_field }}</div>
-                <div class="col-4">{{ form.ya_counter_number|as_crispy_field }}</div>
                 <div class="col-4">{{ form.expiration_date|as_crispy_field }}</div>
                 <div class="col-4 d-none">{{ form.hosting|as_crispy_field }}</div>
                 <div class="col-8">
