@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from loguru import logger
 from web_service.services.service_bd import get_user_hosting, get_user_domain, get_ya_user_counters
-from .services.yandex_api import get_account_counters, get_visits
+from .services.yandex_api import get_account_counters, get_visits, get_hits_counters
 
 
 @login_required
@@ -31,6 +31,13 @@ def start_yandex_analytics(request, pk):
         messages.success(request, 'Yandex visits successfully set')
     else:
         messages.error(request, 'Yandex visits failed set')
+
+    # get and set hits counters
+    domain_list = get_ya_user_counters(request)
+    if get_hits_counters(domain_list):
+        messages.success(request, 'Yandex hits successfully set')
+    else:
+        messages.error(request, 'Yandex hits failed set')
     
     return redirect('analytics_urls', pk=request.user.id)
 

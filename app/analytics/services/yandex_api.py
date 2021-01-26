@@ -61,7 +61,6 @@ def get_visits(counter_list):
     Total count visits
     """
     one = YandexAPInfo()
-    logger.debug(counter_list)
 
     try:
         for _ in counter_list:
@@ -79,12 +78,37 @@ def get_visits(counter_list):
         return False
 
 
+def get_hits_counters(counter_list):
+    """
+    Get unique users
+    """
+    one = YandexAPInfo()
+
+    try:
+        for _ in counter_list:
+            counter_hits = one.parsing_data_from_yandex_api(
+                f"https://api-metrika.yandex.net/stat/v1/data/bytime?metrics="
+                f"ym:s:hits&date1=2daysAgo&date2=today&group=day&id={_.counter_number}")
+
+            YandexCounter.objects.update_or_create(
+                counter_number=_.counter_number, defaults={'count_hits': counter_hits['data'][0]['metrics'][0][2]}
+            )
+            logger.debug(_.counter_number)
+        return True
+    except Exception as msg:
+        logger.error(msg)
+        return False
+
+
 def start_yandex_api():
     # 1. Yandex counter number
     get_account_counters(user_domains, pk)
 
     # 2. Today_visits
     get_visits(counters_list_of_list)
+
+    # 3. Today_hits
+    get_hits_counters(counters_list_of_list)
 
 
 if __name__ == '__main__':
