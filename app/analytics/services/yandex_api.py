@@ -1,10 +1,7 @@
-from web_service.models import DomainData, YandexCounter
+from web_service.models import DomainData, YandexCounter, YandexGoals
 from web_service.services.service_bd import get_user_domain, get_user, get_ya_user_counters
-
-try:
-    from yandex_config import YA_TOKEN
-except ImportError:
-    from .yandex_config import YA_TOKEN
+from .yandex_config import YA_TOKEN
+from django.contrib import messages
 
 import requests
 from loguru import logger
@@ -49,95 +46,155 @@ def get_account_counters(user_domains, pk):
                     YandexCounter.objects.update_or_create(
                         domain=a, defaults={'counter_number': ya_counters['counters'][_]['id']}
                     )
-                    logger.debug(domain, i.url)
+                    # logger.debug(domain, i.url)
         return True
     except Exception as msg:
         logger.error(msg)
         return False
 
 
-def get_visits(counter_list):
+def get_any_counters(counter_list, ya_metrics, counter_name):
     """
-    Total count visits
+    Total count something
     """
     one = YandexAPInfo()
 
     try:
         for _ in counter_list:
-            counter_visits = one.parsing_data_from_yandex_api(
+            counter = one.parsing_data_from_yandex_api(
                 f"https://api-metrika.yandex.net/stat/v1/data/bytime?metrics="
-                f"ym:s:visits&date1=2daysAgo&date2=today&group=day&id={_.counter_number}")
+                f"ym:s:{ya_metrics}&date1=2daysAgo&date2=today&group=day&id={_.counter_number}")
 
             YandexCounter.objects.update_or_create(
-                counter_number=_.counter_number, defaults={'count_visits': counter_visits['data'][0]['metrics'][0][2]}
+                counter_number=_.counter_number, defaults={counter_name: counter['data'][0]['metrics'][0][2]}
             )
-            logger.debug(_.counter_number)
+            # logger.debug(_.counter_number)
         return True
     except Exception as msg:
         logger.error(msg)
         return False
 
 
-def get_hits_counters(counter_list):
+def get_goal_numbers(counter_list):
     """
-    Get unique users
+    Get and goal info and save: counter, name, id
     """
     one = YandexAPInfo()
 
     try:
         for _ in counter_list:
-            counter_hits = one.parsing_data_from_yandex_api(
-                f"https://api-metrika.yandex.net/stat/v1/data/bytime?metrics="
-                f"ym:s:hits&date1=2daysAgo&date2=today&group=day&id={_.counter_number}")
+            goal_counters = one.parsing_data_from_yandex_api(
+                f"https://api-metrika.yandex.net/management/v1/counter/{_.counter_number}/goals")
+            goal_info = len(goal_counters['goals'])
 
-            YandexCounter.objects.update_or_create(
-                counter_number=_.counter_number, defaults={'count_hits': counter_hits['data'][0]['metrics'][0][2]}
-            )
-            logger.debug(_.counter_number)
+            for i in range(goal_info):
+                goal_name = goal_counters['goals'][i]['name']
+                goal_id = goal_counters['goals'][i]['id']
+                logger.debug(goal_id)
+
+                _save_goal_name_id(_.counter_number, goal_id, goal_name)
+                _get_goal_counter(_.counter_number, goal_id)
+                _total_goals(_.counter_number)
+
         return True
     except Exception as msg:
         logger.error(msg)
         return False
 
 
-def get_views_counters(counter_list):
-    """
-    Get unique users
-    """
-    one = YandexAPInfo()
-
-    # for _ in counter_list:
-    #     counter_views = one.parsing_data_from_yandex_api(
-    #         f"https://api-metrika.yandex.net/stat/v1/data/bytime?metrics="
-    #         f"ym:s:users&date1=2daysAgo&date2=today&group=day&id={_[1]}")
-    #     # yesterday = counter_views['data'][0]['metrics'][0][1]
-    #     today = counter_views['data'][0]['metrics'][0][2]
+def _save_goal_name_id(counter_number, goal_id, goal_name):
     try:
-        for _ in counter_list:
-            counter_views = one.parsing_data_from_yandex_api(
-                f"https://api-metrika.yandex.net/stat/v1/data/bytime?metrics="
-                f"ym:s:users&date1=2daysAgo&date2=today&group=day&id={_.counter_number}")
+        goal_counter = YandexGoals.objects.filter(goal_number=goal_id, goal_name=goal_name).first()
+        logger.debug(f"Goal '{goal_counter}' has already been created")
+    except Exception as msg:
+        current_yandex_counter = YandexCounter.objects.filter(counter_number=counter_number).first()
+        goal_counter = YandexGoals.objects.create(
+            counter_number=current_yandex_counter, goal_number=goal_id, goal_name=goal_name
+        )
+        logger.debug(msg)
+        logger.debug(f"Goal '{goal_counter}' successfully set")
 
-            YandexCounter.objects.update_or_create(
-                counter_number=_.counter_number, defaults={'count_views': counter_views['data'][0]['metrics'][0][2]}
-            )
-            logger.debug(_.counter_number)
-        return True
+
+def _get_goal_counter(counter_number, goal_number):
+    """
+    Get and save goal counter
+    """
+    counter = YandexCounter.objects.get(counter_number=counter_number)
+
+    one = YandexAPInfo()
+    get_goal_info = one.parsing_data_from_yandex_api(
+        f"https://api-metrika.yandex.net/stat/v1/data?id={counter_number}&metrics="
+        f"ym:s:goal{goal_number}reaches&date1=today&date2=today&group=day"
+    )
+    counter_goal = get_goal_info['totals'][0]
+    # logger.debug(get_goal_info)
+    try:
+        YandexGoals.objects.update_or_create(
+            goal_number=goal_number, counter_number=counter,
+            defaults={"counter_goal": counter_goal}
+        )
+        logger.debug(f"Total counter '{counter_goal}' successfully save")
     except Exception as msg:
         logger.error(msg)
-        return False
 
 
-def start_yandex_api():
-    # 1. Yandex counter number
-    get_account_counters(user_domains, pk)
+def _total_goals(counter_number):
+    """
+    Get total goal counter
+    """
+    counter = YandexCounter.objects.get(counter_number=counter_number)
+    all_goal = YandexGoals.objects.filter(
+        counter_number=counter
+    )
+    # logger.debug(all_goal)
+    counter = 0
+    for _ in all_goal:
+        counter += float(_.counter_goal)
 
-    # 2. Today_visits
-    get_visits(counters_list_of_list)
+    # logger.debug(counter)
 
-    # 3. Today_hits
-    get_hits_counters(counters_list_of_list)
+    YandexCounter.objects.update_or_create(
+        counter_number=counter_number, defaults={
+            "total_goals": counter}
+    )
+
+
+def start_yandex_api(request, pk):
+    try:
+        user_domains = get_user_domain(request)
+
+        if get_account_counters(user_domains, pk):
+            logger.debug('Yandex counters successfully set')
+        else:
+            logger.error('Yandex counters failed set')
+
+        domain_list = get_ya_user_counters(request)
+
+        if get_any_counters(domain_list, 'visits', 'count_visits'):
+            logger.debug('Yandex visits successfully set')
+        else:
+            logger.error('Yandex visits failed set')
+
+        if get_any_counters(domain_list, 'hits', 'count_hits'):
+            logger.debug('Yandex hits successfully set')
+        else:
+            logger.error('Yandex hits failed set')
+
+        if get_any_counters(domain_list, 'users', 'count_views'):
+            logger.debug('Yandex views successfully set')
+        else:
+            logger.error('Yandex views failed set')
+
+        if get_goal_numbers(domain_list):
+            logger.debug('Yandex goals successfully set')
+        else:
+            logger.error('Yandex goals failed set')
+
+        messages.success(request, 'Actual information successfully set')
+
+    except Exception as msg:
+        messages.error(request, msg)
 
 
 if __name__ == '__main__':
-    start_yandex_api()
+    pass

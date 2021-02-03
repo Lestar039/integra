@@ -7,7 +7,7 @@
 {% block content %}
 <section>
     <div class="container">
-                <h4>Domains</h4>
+                <h4>Yandex Analytics</h4>
         <table class="table table-striped table-sm status-code">
             <thead>
             <tr>
@@ -16,7 +16,7 @@
                 <th>Yandex counter</th>
                 <th>Visits</th>
                 <th>Hits</th>
-                <th>views</th>
+                <th>Views</th>
                 <th>Goals</th>
             </tr>
             </thead>
@@ -33,11 +33,18 @@
                 <td>{{ i.count_visits }}</td>
                 <td>{{ i.count_hits }}</td>
                 <td>{{ i.count_views }}</td>
-                <td>-</td>
+                <td>{{ i.total_goals }}</td>
             </tr>
             {% endfor %}
             </tbody>
         </table>
+                    <div class="text-right">
+            <a href="{% url 'start_yandex_analytics' pk=user.id %}">
+                <button class="btn btn-outline-success">
+                    Refresh
+                </button>
+            </a>
+        </div>
     </div>
 </section>
 {% endblock %}
