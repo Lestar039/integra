@@ -17,10 +17,10 @@ async def process_start_command(message: types.Message):
 
 @dp.message_handler(commands=['help'])
 async def process_help_command(message: types.Message):
-    await message.reply(f"Command list:\n/help\n/show_id")
+    await message.reply(f"Command list:\n/help\n/show_my_id")
 
 
-@dp.message_handler(commands=['show_id'])
+@dp.message_handler(commands=['show_my_id'])
 async def process_show_id_command(message: types.Message):
     await message.reply(f"Set the Telegram chat ID - {message.from_user.id} \n"
                         f"in your Profile for receive any alerts")
