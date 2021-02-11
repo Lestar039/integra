@@ -1,5 +1,7 @@
-from web_service.models import DomainData, YandexCounter, YandexGoals
-from web_service.services.service_bd import get_user_domain, get_user, get_ya_user_counters
+from web_service.models import DomainData
+from ..models import YandexCounter, YandexGoals
+from web_service.services.service_bd import get_user_domain, get_user
+from .service_bd import get_ya_user_counters
 from .yandex_config import YA_TOKEN
 from django.contrib import messages
 
@@ -66,7 +68,7 @@ def get_any_counters(counter_list, ya_metrics, counter_name):
                 f"ym:s:{ya_metrics}&date1=2daysAgo&date2=today&group=day&id={_.counter_number}")
 
             YandexCounter.objects.update_or_create(
-                counter_number=_.counter_number, defaults={counter_name: counter['data'][0]['metrics'][0][2]}
+                counter_number=_.counter_number, defaults={counter_name: int(counter['data'][0]['metrics'][0][2])}
             )
             # logger.debug(_.counter_number)
         return True
@@ -133,7 +135,7 @@ def _get_goal_counter(counter_number, goal_number):
             goal_number=goal_number, counter_number=counter,
             defaults={"counter_goal": counter_goal}
         )
-        logger.debug(f"Total counter '{counter_goal}' successfully save")
+        logger.debug(f"Total goal counter '{counter_goal}' successfully save")
     except Exception as msg:
         logger.error(msg)
 
@@ -155,7 +157,7 @@ def _total_goals(counter_number):
 
     YandexCounter.objects.update_or_create(
         counter_number=counter_number, defaults={
-            "total_goals": counter}
+            "total_goals": int(counter)}
     )
 
 

@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from web_service.services.service_bd import get_ya_user_counters
+from .services.service_bd import get_ya_user_counters
 from .services.yandex_api import start_yandex_api
 
 

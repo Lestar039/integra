@@ -23,8 +23,9 @@ def save_domain(request, pk):
     if request.method == 'POST':
         form = DomainForm(request.POST)
         if form.is_valid():
-            domain = form.cleaned_data.get('url')
+            domain = form.cleaned_data.get('url').lower()
             a = form.save(commit=False)
+            a.url = domain
             a.username = user
             a.save()
 

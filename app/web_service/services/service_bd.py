@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 
-from ..models import HostingData, DomainData, YandexCounter, YandexGoals
+from ..models import HostingData, DomainData
 
 
 def get_user_hosting(request):
@@ -31,9 +31,9 @@ def get_user(pk):
     return user
 
 
-def get_ya_user_counters(request):
-    """
-    Get user's counters
-    """
-    users_counters_list = YandexCounter.objects.filter(domain__username=request.user.id)
-    return users_counters_list
+# def get_ya_user_counters(request):
+#     """
+#     Get user's counters
+#     """
+#     users_counters_list = YandexCounter.objects.filter(domain__username=request.user.id)
+#     return users_counters_list
