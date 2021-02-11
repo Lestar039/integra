@@ -1,12 +1,12 @@
+from .models import YandexCounter
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from .services.service_bd import get_ya_user_counters
 from .services.yandex_api import start_yandex_api
 
 
 @login_required
-def analytics(request, pk):
-    domain_list = get_ya_user_counters(request)
+def analytics(request):
+    domain_list = YandexCounter.objects.all()
     context = {
         'domain_list': domain_list
     }
@@ -14,6 +14,6 @@ def analytics(request, pk):
 
 
 @login_required
-def start_yandex_analytics(request, pk):
-    start_yandex_api(request, pk)
-    return redirect('analytics_urls', pk=request.user.id)
+def start_yandex_analytics(request):
+    start_yandex_api(request)
+    return redirect('analytics_urls')

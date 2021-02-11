@@ -17,8 +17,10 @@
                 <th>#</th>
                 <th>Name</th>
                 <th>Status</th>
+                {% if perms.web_service.change_domain_data %}
                 <th>Edit</th>
                 <th>Delete</th>
+                {% endif %}
             </tr>
             </thead>
             <tbody>
@@ -35,12 +37,14 @@
                 {% else %}
                 <td class="text-danger">{{ i.status }}</td>
                 {% endif %}
+                {% if perms.web_service.change_domain_data %}
                 <td>
-                    <a class="text-primary" href="{% url 'domain_edit_urls' pk=user.id url_ed=i.url %}">Edit</a>
+                    <a class="text-primary" href="{% url 'domain_edit_urls' url_ed=i.url %}">Edit</a>
                 </td>
                 <td>
-                    <a class="text-danger" href="{% url 'domain_delete_urls' pk=user.id url_del=i.url %}">X</a>
+                    <a class="text-danger" href="{% url 'domain_delete_urls' url_del=i.url %}">X</a>
                 </td>
+                {% endif %}
             </tr>
             {% endfor %}
             </tbody>
@@ -55,6 +59,7 @@
     </div>
 </section>
 
+{% if perms.web_service.change_domain_data %}
 <section>
     <div class="container">
         <hr>
@@ -73,5 +78,5 @@
         </form>
     </div>
 </section>
-
+{% endif %}
 {% endblock %}

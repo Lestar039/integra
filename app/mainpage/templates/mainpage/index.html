@@ -15,10 +15,14 @@
             <h3 class="display-4">Hello, {{ user.username }}!</h3>
             <p class="lead">Let's start here:</p>
             <ul>
-                <li><a class="btn-outline-success" href="{% url 'dashboard_urls' pk=user.id %}">Dashboard</a></li>
-                <li><a class="btn-outline-success" href="{% url 'hosting_urls' pk=user.id %}">Hosting</a></li>
-                <li><a class="btn-outline-success" href="{% url 'domains_urls' pk=user.id %}">Domains</a></li>
-                <li><a class="btn-outline-success" href="{% url 'analytics_urls' pk=user.id %}">Analytics</a></li>
+                {% if perms.web_service %}
+                <li><a class="btn-outline-success" href="{% url 'dashboard_urls' %}">Dashboard</a></li>
+                <li><a class="btn-outline-success" href="{% url 'hosting_urls' %}">Hosting</a></li>
+                <li><a class="btn-outline-success" href="{% url 'domains_urls' %}">Domains</a></li>
+                {% endif %}
+                {% if perms.analytics %}
+                <li><a class="btn-outline-success" href="{% url 'analytics_urls' %}">Analytics</a></li>
+                {% endif %}
             </ul>
             <hr class="my-4">
 
@@ -29,11 +33,11 @@
                 <li>Hosting - save info about your hosting: name, account, expiration date</li>
                 <li>Domains - save info about your domains: url, hosting, status and more..</li>
                 <li>Dashboard - all-in-one info on one page</li>
-                <li>SOON! Analytics - yandex metric counter info</li>
+                <li>Analytics - yandex metric counter info</li>
             </ul>
             <hr class="my-4">
             <p>
-                <a class="btn-outline-success" href="{% url 'register' %}" role="button">Register</a> here and LET'S ROCK!
+                <a class="btn-outline-success" href="{% url 'login' %}" role="button">Login</a> here and LET'S ROCK!
             </p>
             {% endif %}
         </div>

@@ -19,7 +19,7 @@ Main Page
                 <div class="col-4 d-none">{{ form.hosting|as_crispy_field }}</div>
                 <div class="col-8">
                     <button class="mr-3 btn btn-outline-primary" type="submit">Save</button>
-                    <a href="{% url 'domains_urls' pk=user.id %}" id="cancel" name="cancel"
+                    <a href="{% url 'domains_urls' %}" id="cancel" name="cancel"
                        class="btn btn-outline-danger">Cancel</a>
                 </div>
             </div>

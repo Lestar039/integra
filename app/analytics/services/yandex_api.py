@@ -31,12 +31,11 @@ class YandexAPInfo:
             logger.error(msg)
 
 
-def get_account_counters(user_domains, pk):
+def get_account_counters(user_domains):
     """
     Get all counters in current account
     """
     one = YandexAPInfo()
-    user = get_user(pk)
     ya_counters = one.parsing_data_from_yandex_api(f"https://api-metrika.yandex.net/management/v1/counters")
 
     try:
@@ -44,7 +43,7 @@ def get_account_counters(user_domains, pk):
             for i in user_domains:
                 domain = ya_counters['counters'][_]['site']
                 if domain == i.url:
-                    a = DomainData.objects.filter(username=user, url=domain).first()
+                    a = DomainData.objects.get(url=domain)
                     YandexCounter.objects.update_or_create(
                         domain=a, defaults={'counter_number': ya_counters['counters'][_]['id']}
                     )
@@ -161,16 +160,16 @@ def _total_goals(counter_number):
     )
 
 
-def start_yandex_api(request, pk):
+def start_yandex_api(request):
     try:
-        user_domains = get_user_domain(request)
+        user_domains = DomainData.objects.all()
 
-        if get_account_counters(user_domains, pk):
+        if get_account_counters(user_domains):
             logger.debug('Yandex counters successfully set')
         else:
             logger.error('Yandex counters failed set')
 
-        domain_list = get_ya_user_counters(request)
+        domain_list = YandexCounter.objects.all()
 
         if get_any_counters(domain_list, 'visits', 'count_visits'):
             logger.debug('Yandex visits successfully set')

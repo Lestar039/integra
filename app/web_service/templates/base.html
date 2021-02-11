@@ -33,21 +33,25 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             {% if request.user.is_authenticated %}
+            {% if perms.web_service %}
             <li class="nav-item active">
-                <a class="nav-link" href="{% url 'dashboard_urls' pk=user.id %}">Dashboard</span></a>
+                <a class="nav-link" href="{% url 'dashboard_urls' %}">Dashboard</span></a>
             </li>
             <li class="nav-item dropdown active">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
                    aria-haspopup="true" aria-expanded="false">Web Service
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="{% url 'hosting_urls' pk=user.id %}">Hosting</a>
-                    <a class="dropdown-item" href="{% url 'domains_urls' pk=user.id %}">Domains</a>
+                    <a class="dropdown-item" href="{% url 'hosting_urls' %}">Hosting</a>
+                    <a class="dropdown-item" href="{% url 'domains_urls' %}">Domains</a>
                 </div>
             </li>
+            {% endif %}
+            {% if perms.analytics %}
             <li class="nav-item active">
-                <a class="nav-link" href="{% url 'analytics_urls' pk=user.id %}">Analytics</span></a>
+                <a class="nav-link" href="{% url 'analytics_urls' %}">Analytics</span></a>
             </li>
+            {% endif %}
             {% endif %}
         </ul>
 

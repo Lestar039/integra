@@ -1,24 +1,22 @@
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
 from .forms import DomainForm, HostingForm
 from .models import DomainData, HostingData
+
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
 from django.contrib import messages
 
 from loguru import logger
 
 from .services.service_check_status_code import check_run
 from .services.service_time_comparison import domain_time_comparison, hosting_time_comparison, check_telegram_id
-from .services.servece_dashboard import hosting_db, domain_db
-from .services.service_bd import get_user_hosting, get_user_domain, get_user
 
 
 @login_required
-def save_domain(request, pk):
+def save_domain(request):
     """
     Save url to DB
     """
-    user = get_user(pk)
-    domain_list = get_user_domain(request)
+    domain_list = DomainData.objects.all()
 
     if request.method == 'POST':
         form = DomainForm(request.POST)
@@ -26,10 +24,9 @@ def save_domain(request, pk):
             domain = form.cleaned_data.get('url').lower()
             a = form.save(commit=False)
             a.url = domain
-            a.username = user
             a.save()
 
-            check_telegram_id(request, pk)
+            check_telegram_id(request, request.user.id)
             messages.success(request, f'{domain} has been successfully added')
             form = DomainForm()
     else:
@@ -44,14 +41,12 @@ def save_domain(request, pk):
 
 
 @login_required
-def edit_domain(request, pk, url_ed):
+def edit_domain(request, url_ed):
     """
     Edit domain form
     """
-    edit_form = DomainData.objects.filter(
-        username=pk,
-        url=url_ed
-    ).first()
+
+    edit_form = DomainData.objects.get(url=url_ed)
 
     if request.method == 'POST':
         form = DomainForm(request.POST, instance=edit_form)
@@ -59,7 +54,7 @@ def edit_domain(request, pk, url_ed):
             form.save()
             messages.success(request, f'{url_ed} has been updated')
             logger.debug(f'{url_ed} has been updated')
-            return redirect('domains_urls', pk=request.user.id)
+            return redirect('domains_urls')
     else:
         form = DomainForm(instance=edit_form)
     context = {
@@ -70,45 +65,32 @@ def edit_domain(request, pk, url_ed):
 
 
 @login_required
-def delete_domain(request, pk, url_del):
+def delete_domain(request, url_del):
     """
     Delete url from DB
     """
-    url = DomainData.objects.get(
-        username=pk,
-        url=url_del)
+
+    url = DomainData.objects.get(url=url_del)
     url.delete()
     messages.success(request, f'{url_del} has been deleted')
-    return redirect('domains_urls', pk=request.user.id)
+    return redirect('domains_urls')
 
 
 @login_required
-def start_check(request):
-    """
-    Start parsing status code
-    """
-    check_run()
-    messages.success(request, 'Scan websites successfully done')
-    return redirect('domains_urls', pk=request.user.id)
-
-
-@login_required
-def save_hosting(request, pk):
+def save_hosting(request):
     """
     Save hosting to DB
     """
-    host_list = get_user_hosting(request)
-    user = get_user(pk)
+    host_list = HostingData.objects.all()
 
     if request.method == 'POST':
         form = HostingForm(request.POST)
         if form.is_valid():
             hosting = form.cleaned_data.get('name')
             a = form.save(commit=False)
-            a.username = user
             a.save()
 
-            check_telegram_id(request, pk)
+            check_telegram_id(request, request.user.id)
             messages.success(request, f'{hosting} has been successfully added')
             form = HostingForm()
     else:
@@ -123,14 +105,11 @@ def save_hosting(request, pk):
 
 
 @login_required
-def edit_hosting(request, pk, name_ed):
+def edit_hosting(request, name_ed):
     """
     Edit hosting form
     """
-    edit_form = HostingData.objects.filter(
-        username=pk,
-        name=name_ed,
-    ).first()
+    edit_form = HostingData.objects.get(name=name_ed)
 
     if request.method == 'POST':
         form = HostingForm(request.POST, instance=edit_form)
@@ -138,7 +117,7 @@ def edit_hosting(request, pk, name_ed):
             form.save()
             messages.success(request, f'{name_ed} has been updated')
             logger.debug(f'{name_ed} has been updated')
-            return redirect('hosting_urls', pk=request.user.id)
+            return redirect('hosting_urls')
     else:
         form = HostingForm(instance=edit_form)
     context = {
@@ -149,16 +128,14 @@ def edit_hosting(request, pk, name_ed):
 
 
 @login_required
-def delete_hosting(request, pk, name_del):
+def delete_hosting(request, name_del):
     """
     Delete hosting from DB
     """
-    name = HostingData.objects.get(
-        username=pk,
-        name=name_del)
+    name = HostingData.objects.get(name=name_del)
     name.delete()
     messages.success(request, f'{name_del} has been deleted')
-    return redirect('hosting_urls', pk=request.user.id)
+    return redirect('hosting_urls')
 
 
 def redirect_to_user_page(request):
@@ -166,16 +143,26 @@ def redirect_to_user_page(request):
     Redirect after Login to Dashboard Page
     """
     logger.debug(f'Redirect from login to {request.user.id} user dashboard')
-    return redirect(f'/user/dashboard/{request.user.id}')
+    return redirect(f'/user/dashboard/')
 
 
 @login_required
-def dashboard(request, pk):
+def start_check(request):
+    """
+    Start parsing status code
+    """
+    check_run()
+    messages.success(request, 'Scan websites successfully done')
+    return redirect('domains_urls')
+
+
+@login_required
+def dashboard(request):
     """
     All-in-one page information
     """
-    domains = domain_db(pk)
-    hosting = hosting_db(pk)
+    domains = DomainData.objects.all()
+    hosting = HostingData.objects.all()
 
     dom_ex_time = domain_time_comparison()
     host_ex_time = hosting_time_comparison()
