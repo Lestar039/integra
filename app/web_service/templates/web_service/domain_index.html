@@ -17,7 +17,7 @@
                 <th>#</th>
                 <th>Name</th>
                 <th>Status</th>
-                {% if perms.web_service.change_domain_data %}
+                {% if perms.web_service %}
                 <th>Edit</th>
                 <th>Delete</th>
                 {% endif %}
@@ -37,7 +37,7 @@
                 {% else %}
                 <td class="text-danger">{{ i.status }}</td>
                 {% endif %}
-                {% if perms.web_service.change_domain_data %}
+                {% if perms.web_service %}
                 <td>
                     <a class="text-primary" href="{% url 'domain_edit_urls' url_ed=i.url %}">Edit</a>
                 </td>
@@ -59,7 +59,7 @@
     </div>
 </section>
 
-{% if perms.web_service.change_domain_data %}
+{% if perms.web_service %}
 <section>
     <div class="container">
         <hr>

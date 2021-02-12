@@ -1,7 +1,7 @@
 from .forms import DomainForm, HostingForm
 from .models import DomainData, HostingData
 
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.shortcuts import render, redirect
 from django.contrib import messages
 
@@ -11,7 +11,8 @@ from .services.service_check_status_code import check_run
 from .services.service_time_comparison import domain_time_comparison, hosting_time_comparison, check_telegram_id
 
 
-@login_required
+# @login_required
+# @permission_required('web_service.change_domain_data')
 def save_domain(request):
     """
     Save url to DB

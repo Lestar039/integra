@@ -18,7 +18,7 @@
                 <th>Name</th>
                 <th>Account</th>
                 <th>Expiration date</th>
-                {% if perms.web_service.change_hosting_data %}
+                {% if perms.web_service %}
                 <th>Edit</th>
                 <th>Delete</th>
                 {% endif %}
@@ -31,7 +31,7 @@
                 <td>{{ i.name }}</td>
                 <td>{{ i.account }}</td>
                 <td>{{ i.expiration_date }}</td>
-                {% if perms.web_service.change_hosting_data %}
+                {% if perms.web_service %}
                 <td>
                     <a class="text-primary" href="{% url 'hosting_edit_urls' name_ed=i.name %}">Edit</a>
                 </td>
@@ -46,7 +46,7 @@
     </div>
 </section>
 
-{% if perms.web_service.change_hosting_data %}
+{% if perms.web_service %}
 <section>
     <div class="container">
         <hr>
