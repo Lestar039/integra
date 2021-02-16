@@ -164,8 +164,8 @@ def dashboard(request):
     domains = DomainData.objects.all()
     hosting = HostingData.objects.all()
 
-    dom_ex_time = domain_time_comparison()
-    host_ex_time = hosting_time_comparison()
+    dom_ex_time = domain_time_comparison(request)
+    host_ex_time = hosting_time_comparison(request)
 
     context = {
         'domains': domains,

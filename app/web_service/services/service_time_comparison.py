@@ -41,7 +41,7 @@ def _send_alert_to_telegram(some_service, user_telegram_id, some_days, some_name
         logger.debug('Send alert!')
 
 
-def domain_time_comparison():
+def domain_time_comparison(request):
     """
     Create expiration time list domains
     """
@@ -54,12 +54,12 @@ def domain_time_comparison():
         if delta.days <= 7:
             expiration_list.append([_.url, delta.days])
 
-            _send_alert_to_telegram(_.url, _.username.profile.telegram_id, delta.days, 'Domain')
+            _send_alert_to_telegram(_.url, request.user.profile.telegram_id, delta.days, 'Domain')
 
     return expiration_list
 
 
-def hosting_time_comparison():
+def hosting_time_comparison(request):
     """
     Create expiration time list hosting
     """
@@ -72,6 +72,6 @@ def hosting_time_comparison():
         if delta.days <= 7:
             expiration_list.append([_.name, delta.days])
 
-            _send_alert_to_telegram(_.name, _.username.profile.telegram_id, delta.days, 'Hosting')
+            _send_alert_to_telegram(_.name, request.user.profile.telegram_id, delta.days, 'Hosting')
 
     return expiration_list
