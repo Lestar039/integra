@@ -33,7 +33,7 @@ class CheckStatusCode:
             return False
 
 
-def check_run():
+def check_status_code():
     url_list = DomainData.objects.only('url')
 
     for _ in url_list:
@@ -62,4 +62,4 @@ def check_run():
 
 
 if __name__ == "__main__":
-    check_run()
+    check_status_code()

@@ -7,7 +7,7 @@ from django.contrib import messages
 
 from loguru import logger
 
-from .services.service_check_status_code import check_run
+from .services.service_check_status_code import check_status_code
 from .services.service_time_comparison import domain_time_comparison, hosting_time_comparison, check_telegram_id
 
 
@@ -147,33 +147,23 @@ def redirect_to_user_page(request):
 
 
 @login_required
-def start_check(request):
-    """
-    Start parsing status code
-    """
-    check_run()
-    messages.success(request, 'Scan websites successfully done')
-    return redirect('domains_urls')
-
-
-@login_required
 def dashboard(request):
     """
     All-in-one page information
     """
-    check_run()
+    check_status_code()
 
     domains = DomainData.objects.all()
     hosting = HostingData.objects.all()
 
-    dom_ex_time = domain_time_comparison(request)
-    host_ex_time = hosting_time_comparison(request)
+    domain_expiration_date = domain_time_comparison(request)
+    hosting_expiration_date = hosting_time_comparison(request)
 
     context = {
         'domains': domains,
         'hosting': hosting,
-        'dom_ex_time': dom_ex_time,
-        'host_ex_time': host_ex_time
+        'dom_ex_time': domain_expiration_date,
+        'host_ex_time': hosting_expiration_date
     }
 
     return render(request, 'web_service/dashboard.html', context=context)

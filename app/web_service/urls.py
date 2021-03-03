@@ -14,6 +14,5 @@ urlpatterns = [
     path('hosting-delete/<str:name_del>/', views.delete_hosting, name='hosting_delete_urls'),
 
     # services paths
-    path('check/', views.start_check, name='check_sites_urls'),
     path('user-redirect', views.redirect_to_user_page, name='redirect_to_user_page'),
 ]
