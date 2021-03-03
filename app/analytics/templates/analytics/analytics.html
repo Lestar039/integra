@@ -7,7 +7,7 @@
 {% block content %}
 <section>
     <div class="container">
-                <h4>Yandex Analytics</h4>
+                <h4>Daily Yandex Analytics</h4>
         <table class="table table-striped table-sm status-code">
             <thead>
             <tr>
@@ -18,33 +18,25 @@
                 <th>Hits</th>
                 <th>Views</th>
                 <th>Goals</th>
+                <th>More info*</th>
             </tr>
             </thead>
             <tbody>
-            {% for i in domain_list %}
+            {% for i, j in data.items %}
             <tr>
                 <th scope="row">{{ forloop.counter }}</th>
-                {% if i.ssh %}
-                <td>https://{{ i.domain }}</td>
-                {% else %}
-                <td>http://{{ i.domain }}</td>
-                {% endif %}
-                <td>{{ i.counter_number }}</td>
-                <td>{{ i.count_visits }}</td>
-                <td>{{ i.count_hits }}</td>
-                <td>{{ i.count_views }}</td>
-                <td>{{ i.total_goals }}</td>
+                <td>https://{{ i }}</td>
+                <td>{{ j.0 }}</td>
+                <td>{{ j.1 }}</td>
+                <td>{{ j.2 }}</td>
+                <td>{{ j.3 }}</td>
+                <td>{{ j.4 }}</td>
+                <td><a target="_blank" href="https://metrika.yandex.ru/dashboard?group=day&period=week&id={{ j.0 }}">click me</a></td>
             </tr>
             {% endfor %}
             </tbody>
         </table>
-                    <div class="text-right">
-            <a href="{% url 'start_yandex_analytics' %}">
-                <button class="btn btn-outline-success">
-                    Refresh
-                </button>
-            </a>
-        </div>
+        <p>* You'll be redirected to your yandex metrics account to see more detailed information</p>
     </div>
 </section>
 {% endblock %}

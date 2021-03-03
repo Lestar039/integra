@@ -13,13 +13,11 @@ def get_user_hosting(request):
     return hosting_list
 
 
-def get_user_domain(request):
+def get_user_domain():
     """
         Get user's domain
     """
-    domain_list = DomainData.objects.filter(
-        username=request.user.id
-    )
+    domain_list = DomainData.objects.all()
     return domain_list
 
 

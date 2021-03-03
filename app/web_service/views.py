@@ -16,7 +16,7 @@ def save_domain(request):
     """
     Save url to DB
     """
-    domain_list = DomainData.objects.all()
+    domain_list = DomainData.objects.all().order_by('expiration_date')
 
     if request.method == 'POST':
         form = DomainForm(request.POST)
