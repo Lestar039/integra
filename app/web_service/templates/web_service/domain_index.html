@@ -16,7 +16,7 @@
             <tr>
                 <th>#</th>
                 <th>Name</th>
-                <th>Status</th>
+                <th>hosting</th>
                 {% if perms.web_service %}
                 <th>Edit</th>
                 <th>Delete</th>
@@ -32,11 +32,7 @@
                 {% else %}
                 <td>http://{{ i.url }}</td>
                 {% endif %}
-                {% if i.status == "Success" %}
-                <td class="text-success">{{ i.status }}</td>
-                {% else %}
-                <td class="text-danger">{{ i.status }}</td>
-                {% endif %}
+                <td>{{ i.hosting }}</td>
                 {% if perms.web_service %}
                 <td>
                     <a class="text-primary" href="{% url 'domain_edit_urls' url_ed=i.url %}">Edit</a>
@@ -49,13 +45,7 @@
             {% endfor %}
             </tbody>
         </table>
-        <div class="text-right">
-            <a href="{% url 'check_sites_urls' %}">
-                <button class="btn btn-outline-success">
-                    Check now
-                </button>
-            </a>
-        </div>
+        <p>* Go to Dashboard to check status website</p>
     </div>
 </section>
 

@@ -161,6 +161,8 @@ def dashboard(request):
     """
     All-in-one page information
     """
+    check_run()
+
     domains = DomainData.objects.all()
     hosting = HostingData.objects.all()
 

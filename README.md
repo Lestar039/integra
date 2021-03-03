@@ -11,5 +11,5 @@ Web service for:
     -   visits, 
     -   hits, 
     -   users, 
-    -   goals
-
+    -   total goals
+    - link to your yandex metrics account to see more detailed information
